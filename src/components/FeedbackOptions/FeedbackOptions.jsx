@@ -1,29 +1,24 @@
-// import PropTypes from 'prop-types'
 import { Button } from 'ui/Button.styled';
 import { Ul } from './feedbackOptions.styled';
+import { useContext, useMemo } from 'react';
+import { Context } from 'context/globalContext';
 
-const fedbackChoises = ['Good', 'Neutral', 'Bad'];
+const feedbackChoices = ['Good', 'Neutral', 'Bad'];
 
-const renderButtons = onLeaveFeedback => {
-  return fedbackChoises.map(option => {
-    return (
-      <li>
-        <Button
-          onClick={() => {
-            onLeaveFeedback(option.toLowerCase());
-          }}
-        >
+const FeedbackOptions = () => {
+  const { dispatch: onLeaveFeedback } = useContext(Context);
+
+  const buttonsList = useMemo(() => {
+    return feedbackChoices.map(option => (
+      <li key={option}>
+        <Button onClick={() => onLeaveFeedback({ type: option.toLowerCase() })}>
           {option}
         </Button>
       </li>
-    );
-  });
-};
+    ));
+  }, [onLeaveFeedback]);
 
-const FeedbackOptions = ({ onLeaveFeedback }) => {
-  return <Ul>{renderButtons(onLeaveFeedback)}</Ul>;
+  return <Ul>{buttonsList}</Ul>;
 };
-
-// FeedbackOptions.propTypes = {}
 
 export default FeedbackOptions;

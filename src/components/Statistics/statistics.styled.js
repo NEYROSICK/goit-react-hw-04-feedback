@@ -7,6 +7,7 @@ export const Ul = styled.ul`
   border: 1px solid #000;
   background-color: white;
   font-weight: bold;
+  overflow: hidden;
 
   li:nth-of-type(2n) {
     background-color: #000;

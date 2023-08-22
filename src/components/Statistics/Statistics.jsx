@@ -1,7 +1,30 @@
-import PropTypes from 'prop-types';
 import { Ul, Li } from './statistics.styled';
+import { useContext } from 'react';
+import { Context } from 'context/globalContext';
 
-const Statistics = ({ good, neutral, bad, total, positivePercentage }) => {
+const Statistics = () => {
+  let { state, TOTAL_FEEDBACK } = useContext(Context);
+
+  const countTotalFeedback = () => {
+    return (TOTAL_FEEDBACK = Object.values(state).reduce(
+      (total, value) => total + value
+    ));
+  };
+
+  const countPositiveFeedbackPercentage = () => {
+    if (TOTAL_FEEDBACK !== 0) {
+      const positive = ((state.good / TOTAL_FEEDBACK) * 100).toFixed(1);
+      return positive.includes(0.0)
+        ? Math.floor(positive) + '%'
+        : positive + '%';
+    }
+    return 0 + '%';
+  };
+
+  const total = countTotalFeedback();
+  const positivePercentage = countPositiveFeedbackPercentage();
+  const { good, neutral, bad } = state;
+
   return (
     <Ul>
       <Li>Good: {good}</Li>
@@ -11,14 +34,6 @@ const Statistics = ({ good, neutral, bad, total, positivePercentage }) => {
       <Li>Positive feedback: {positivePercentage}</Li>
     </Ul>
   );
-};
-
-Statistics.propTypes = {
-  good: PropTypes.number.isRequired,
-  neutral: PropTypes.number.isRequired,
-  bad: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
-  positivePercentage: PropTypes.string,
 };
 
 export default Statistics;
